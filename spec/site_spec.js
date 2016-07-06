@@ -1,5 +1,21 @@
 describe('Site.js', function() {
- 
+
+	describe("#jsonLoader", function(){
+	 	it("should return a object,not empty, with arrays, with keys name imgUrl rating and price", function(done) {
+	 		jsonLoader.loadJSON(function(response){
+	      var hotels = response.hotels;
+	      expect(response).toBeObject;
+	      expect(response).toBeNonEmptyObject;
+	      expect(hotels).toBeArray;
+	      expect(hotels[0].name).toBeString;
+	      expect(hotels[0].price).toBeNumber;
+	      expect(hotels).toHaveNumber;
+	      expect(hotels[0].imgUrl).toBeString;
+	      expect(hotels[0].price).toBeNumber;
+	      done();
+	    });
+	 	});
+	});
  var renderDefaultPartialHotel = function(){
  	 			divInfoWrapper = document.createElement("div");
 			imgHotel = document.createElement("img");
@@ -65,7 +81,7 @@ describe('Site.js', function() {
 			expect( document.getElementById("hotel-rating").getAttribute('src') ).toEqual("images/ratings-04.png");
 			expect( document.getElementById("hotel-price").innerHTML ).toEqual("£59.99");
 		});
-		it('Should render the hotel info provided with the json', function() {
+		it('Should render the hotel info provided by the hotel number and his position in the json', function() {
       var hotel = {name:"Hotel Info test", imgUrl: "images/sunny.jpg", rating: 4, price: 59.99}
       siteCtrl.selectHotel(1,[hotel, hotel]); 
       expect( document.getElementById("hotel-name").innerHTML ).toEqual("Hotel Info test");
