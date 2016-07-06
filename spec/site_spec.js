@@ -1,76 +1,79 @@
 describe('Site.js', function() {
+ 
+ var renderDefaultPartialHotel = function(){
+ 	 			divInfoWrapper = document.createElement("div");
+			imgHotel = document.createElement("img");
+			imgHotel.setAttribute('id', 'hotel-img');
+			divNameRating = document.createElement("div");
+			divNameRating.setAttribute('id', 'hotel-name-rating');
+			h4 = document.createElement("h4");
+			h4.setAttribute('id', 'hotel-name');
+			imgHotelRating = document.createElement("img");
+			imgHotelRating.setAttribute('id', 'hotel-rating');
+			divPriceWrapper = document.createElement("div");
+			divPriceWrapper.setAttribute('class', 'hotel-cost');
+			h5 = document.createElement("h5");
+			h5.setAttribute('id', 'hotel-price');
+			divPriceWrapper.appendChild(h5);
+			divNameRating.appendChild(h4);
+			divNameRating.appendChild(imgHotelRating);
+			divInfoWrapper.appendChild(imgHotel);
+			divInfoWrapper.appendChild(divNameRating);
+			divInfoWrapper.appendChild(divPriceWrapper);
+			document.body.appendChild(divInfoWrapper);
+ }
 
 	describe("#getHotelImageRating", function(){
 		it('Should return a string when called with a number', function() {
 			expect(siteCtrl.getHotelImageRating(2)).toEqual("images/ratings-02.png");
+			expect(siteCtrl.getHotelImageRating(5)).toEqual("images/ratings-05.png");
 		});
 	})
-	
-	describe('#renderHotelInfo', function() {
+	describe("#renderMainNav", function(){
+		var ul;
 		beforeEach(function(){
-			var divWrapper = document.createElement('div');
-			var hotelImg = document.createElement('img');
-			hotelImg.setAttribute('id', 'hotel-img');
-			divWrapper.appendChild(hotelImg);
-			var divHotelNameRating = document.createElement('div');
-			var h4 = document.createElement('h4');
-			h4.setAttribute('id', 'hotel-name');
-			var imgRating = document.createElement('img');
-			imgRating.setAttribute('id', 'hotel-tating');
-			divHotelNameRating.appendChild(h4);
-			divHotelNameRating.appendChild(imgRating);
-			divWrapper.appendChild(divHotelNameRating);
-			var divPrice = document.createElement('div');
-			var h5 = document.createElement('h5');
-			h5.setAttribute('id', 'hotel-price');
-			divPrice.appendChild(h5);
-			divWrapper.appendChild(divPrice);
-			
+			ul = document.createElement("ul");
+			ul.setAttribute("class", "js-ul-list");
+			document.body.appendChild(ul);
+
 		});
 		afterEach(function(){
-			var body = document.getElementsByTagName(body)
-			if(body.firstChild){
-				while (body.firstChild) {
-						body.removeChild(body.firstChild);
-				}
-			}
+			
 		});
-		it('Should modify the dom', function() {
-			var json=[
-			        {
-			            "name": "Hotel Sunny Palms",
-			            "imgUrl": "imgs/sunny.jpg",
-			            "rating": 5,
-			            "price": 108.00
-			        },
-			        {
-			            "name": "Hotel Snowy Mountains",
-			            "imgUrl": "imgs/snowy.jpg",
-			            "rating": 4,
-			            "price": 120.00
-			        },
-			        {
-			            "name": "Hotel Windy Sails",
-			            "imgUrl": "imgs/windy.jpg",
-			            "rating": 3,
-			            "price": 110.00
-			        },
-			        {
-			            "name": "Hotel Middle of Nowhere",
-			            "imgUrl": "imgs/nowhere.jpg",
-			            "rating": 4,
-			            "price": 199.00
-			        }
-			]
-			console.log(json[0]);
-			console.log(document.getElementById("hotel-name"));
-			siteCtrl.renderHotelInfo(json[0]);
-			var hotelName = document.getElementById("hotel-name");
-			var name = hotelName.innerHTML;
-			console.log(name);
-			expect(name).toEqual("Hotel Sunny Palms");
+		it('Should render many li as "name" keys are in the json file', function() {
+      var objectData = [{name:"super Hotel test 1"},{name:"mini Hotel test 2"}]
+		  siteCtrl.renderMainNav(objectData);	
+			expect( document.getElementById("li-number-0").innerHTML ).toEqual("super Hotel test 1");
+			expect( document.getElementById("li-number-1").innerHTML ).toEqual("mini Hotel test 2");
+			expect( document.getElementById("li-number-0").getAttribute('data-number') ).toEqual('0');
 		});
 	});
+	describe("#renderHotelInfo", function(){
+		var divInfoWrapper, imgHotel, divNameRating, h4, imgHotelRating, divPriceWrapper, h5;
+		beforeEach(function(){ 
+      renderDefaultPartialHotel()
+		});
 
+		afterEach(function(){
+			
+		});
+		it('Should render the hotel info provided with the json', function() {
+      var hotel = {name:"Hotel Info test", imgUrl: "images/sunny.jpg", rating: 4, price: 59.99}
+      siteCtrl.renderHotelInfo(hotel);
+      expect( document.getElementById("hotel-name").innerHTML ).toEqual("Hotel Info test");
+			expect( document.getElementById("hotel-img").getAttribute("src") ).toEqual("images/sunny.jpg");
+			expect( document.getElementById("hotel-rating").getAttribute('src') ).toEqual("images/ratings-04.png");
+			expect( document.getElementById("hotel-price").innerHTML ).toEqual("£59.99");
+		});
+		it('Should render the hotel info provided with the json', function() {
+      var hotel = {name:"Hotel Info test", imgUrl: "images/sunny.jpg", rating: 4, price: 59.99}
+      siteCtrl.selectHotel(1,[hotel, hotel]); 
+      expect( document.getElementById("hotel-name").innerHTML ).toEqual("Hotel Info test");
+			expect( document.getElementById("hotel-img").getAttribute("src") ).toEqual("images/sunny.jpg");
+			expect( document.getElementById("hotel-rating").getAttribute('src') ).toEqual("images/ratings-04.png");
+			expect( document.getElementById("hotel-price").innerHTML ).toEqual("£59.99");
+		});
+	});
 });
+
 
