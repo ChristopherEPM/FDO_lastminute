@@ -1,4 +1,4 @@
- var siteCtrl ={
+var siteCtrl ={
 
   init: function(jsonLoad) {
     var that = this;
@@ -9,7 +9,6 @@
       that.loadHotelInfo(hotels);
     });
   },
- 
   renderMainNav: function(objectData){
     var size = Object.keys(objectData).length;
     var ul = document.getElementsByClassName("js-ul-list")[0];
@@ -19,6 +18,7 @@
       var li = document.createElement('li');
       li.appendChild(document.createTextNode(data));
       li.setAttribute('data-number', iteration);
+      li.setAttribute('id', "li-number-"+iteration);
       li.className = "js-mainnav-li";
       ul.appendChild(li);
     }    
